@@ -1,5 +1,9 @@
 {
   "sys_login": "Đăng nhập",
+  "sys_login_username": "Tên đăng nhập",
+  "sys_login_password": "Mật khẩu",
   "sys_register": "Đăng ký",
-  "sys_guest": "Khách"
+  "sys_guest": "Khách",
+  "sys_login_remember": "Nhớ mật khẩu",
+  "sys_login_forgot_password": "Quên mật khẩu?"
 }

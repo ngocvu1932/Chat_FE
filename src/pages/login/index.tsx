@@ -6,21 +6,23 @@ import vn_flag from '../../assets/imgs/img_flag_viet_nam.png';
 import en_flag from '../../assets/imgs/img_flag_usa.png';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
+import LoginComp from './component/login';
+import {useSelector} from 'react-redux';
 
 const VERSION = import.meta.env.VITE_APP_VER;
 
 const LoginPage = () => {
   const {t} = useTranslation();
+  const appConfig = JSON.parse(localStorage.getItem('appConfig') ?? '{}');
   const lang = JSON.parse(localStorage.getItem('appConfig') ?? '{}').defaultLanguage ?? 'vi';
+  const user = useSelector((state: any) => state.user.user);
+
+  console.log('user', user);
 
   const changeLanguage = (lng: string) => {
-    // dispatch(setLoading(true));
-    localStorage.setItem('appConfig', JSON.stringify({defaultLanguage: lng}));
-    // setLanguage(lng);
-    // setIsShowChooseLanguage(false);
+    localStorage.setItem('appConfig', JSON.stringify({...appConfig, defaultLanguage: lng}));
     setTimeout(() => {
       i18next.changeLanguage(lng);
-      //   dispatch(setLoading(false));
     }, 500);
   };
 
@@ -28,7 +30,7 @@ const LoginPage = () => {
     {
       label: <p className="text-base">{t('sys_login')}</p>, // Đăng nhập
       key: '1',
-      children: <div> đăng nhập </div>,
+      children: <LoginComp />,
     },
     {
       label: <p className="text-base">{t('sys_register')}</p>, //Đăng ký

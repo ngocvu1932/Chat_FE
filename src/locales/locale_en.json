@@ -1,5 +1,9 @@
 {
   "sys_login": "Login",
+  "sys_login_username": "Username",
+  "sys_login_password": "Password",
   "sys_register": "Register",
-  "sys_guest": "Guest"
+  "sys_guest": "Guest",
+  "sys_login_remember": "Remember me",
+  "sys_login_forgot_password": "Forgot password?"
 }
