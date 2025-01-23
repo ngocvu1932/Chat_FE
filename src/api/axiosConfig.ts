@@ -27,7 +27,18 @@ axiosInstance.interceptors.response.use(
     // xử lý response trước khi trả về
     // console.log('response', response);
 
-    if (response.status === 200) {
+    if (
+      response.status === 200 ||
+      response.status === 201 ||
+      response.status === 202 ||
+      response.status === 203 ||
+      response.status === 204 ||
+      response.status === 205 ||
+      response.status === 206 ||
+      response.status === 207 ||
+      response.status === 208 ||
+      response.status === 209
+    ) {
       return response.data;
     }
     return response;

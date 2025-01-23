@@ -9,6 +9,8 @@ import {initReactI18next} from 'react-i18next';
 import {appConfig} from './appConfig.ts';
 import enLocale from './locales/locale_en.json';
 import viLocale from './locales/locale_vi.json';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 if (!localStorage.getItem('appConfig')) {
   localStorage.setItem('appConfig', JSON.stringify(appConfig));
@@ -39,6 +41,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <App />
+      <ToastContainer />
     </Provider>
   </StrictMode>
 );

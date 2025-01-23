@@ -8,6 +8,7 @@ import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
 import LoginComp from './component/login';
 import {useSelector} from 'react-redux';
+import RegisterComp from './component/register';
 
 const VERSION = import.meta.env.VITE_APP_VER;
 
@@ -35,12 +36,12 @@ const LoginPage = () => {
     {
       label: <p className="text-base">{t('sys_register')}</p>, //Đăng ký
       key: '2',
-      children: <div> đăng kí </div>,
+      children: <RegisterComp />,
     },
     {
       label: <p className="text-base">{t('sys_guest')}</p>, // Khách
       key: '3',
-      children: <div> Khách </div>,
+      children: <div>Đang phát triển...</div>,
     },
   ];
 

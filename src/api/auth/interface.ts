@@ -9,6 +9,24 @@ export interface ILoginResponse {
   data: User;
 }
 
+export interface IRegisterRequest {
+  username: string;
+  password: string;
+  email: string;
+}
+
+export interface IRegisterResponse {
+  status: number;
+  message: string;
+  data: User;
+}
+
+export interface IVerifyEmailRequest {
+  username: string;
+  email: string;
+  verifyCode: string;
+}
+
 export interface User {
   _id: string;
   phone: string;
@@ -17,10 +35,10 @@ export interface User {
   email: string;
   password: string;
   avatar: string;
+  isVerified: boolean;
   address: string;
   createdAt: string;
   updatedAt: string;
-  __v?: number;
   accessToken?: string;
   refreshToken?: string;
 }
