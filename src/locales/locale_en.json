@@ -1,5 +1,6 @@
 {
   "sys_login": "Login",
+  "sys_version": "Version",
   "sys_login_username": "Username",
   "sys_login_password": "Password",
   "sys_login_repassword": "Re-password",
@@ -24,5 +25,6 @@
   "sys_notify_register_username_gmail_exist": "Username or email already taken!",
   "sys_notify_verify_success": "Account verification successful!",
   "sys_notify_verify_code_invalid": "The verification code is incorrect!",
-  "sys_notify_verify_error": "An error occurred!"
+  "sys_notify_verify_error": "An error occurred!",
+  "sys_submit_verify": "Submit"
 }

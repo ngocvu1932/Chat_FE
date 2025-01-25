@@ -6,18 +6,25 @@ import {useEffect, useState} from 'react';
 import authAPIs from '../api/auth';
 import {setUser} from '../redux/slices/userSlice';
 import Splash from '../components/splash';
+import HomePage from './home';
 
 const App = () => {
   const user = useSelector((state: any) => state.user.user);
   const accessToken = Cookies.get('accessToken');
+  const refreshToken = Cookies.get('refreshToken');
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProlife();
+    if (accessToken || refreshToken) {
+      getProfile();
+    } else {
+      // Nếu đã có user và không có accessToken thì không gọi hàm lấy profile, set loading = false để vào app
+      setLoading(false);
+    }
   }, [accessToken]);
 
-  const getProlife = async () => {
+  const getProfile = async () => {
     setLoading(true);
     try {
       const res = await authAPIs.getProfile();
@@ -39,7 +46,7 @@ const App = () => {
       <Routes>
         {user ? (
           <>
-            <Route path="/" element={<div className="text-red-400">Home page</div>} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Navigate to="/" />} />
             <Route path="/profile" element={<div>Profile Page</div>} />
             <Route path="*" element={<div>Page not found</div>} />

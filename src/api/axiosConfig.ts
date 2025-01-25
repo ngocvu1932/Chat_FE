@@ -25,20 +25,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     // xử lý response trước khi trả về
-    // console.log('response', response);
-
-    if (
-      response.status === 200 ||
-      response.status === 201 ||
-      response.status === 202 ||
-      response.status === 203 ||
-      response.status === 204 ||
-      response.status === 205 ||
-      response.status === 206 ||
-      response.status === 207 ||
-      response.status === 208 ||
-      response.status === 209
-    ) {
+    if (response.status === 200 || response.status === 201) {
       return response.data;
     }
     return response;
@@ -46,8 +33,19 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     // Xử lý lỗi toàn cục
+    if (error.response.status === 400) {
+      return error.response.data;
+    }
+
     // Nếu lỗi 401 và không phải là request để làm mới token
     if (error.response.status === 401 && !originalRequest._retry) {
+      const config = localStorage.getItem('appConfig');
+      const appConfig = config ? JSON.parse(config) : {};
+
+      if (!appConfig.rememberMe) {
+        return;
+      }
+
       originalRequest._retry = true; // Đánh dấu để không lặp lại việc làm mới token
       try {
         const refreshToken = Cookies.get('refreshToken');

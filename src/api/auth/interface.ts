@@ -4,9 +4,15 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
+  statusCode: number;
   status: number;
   message: string;
   data: User;
+}
+export interface ILogoutResponse {
+  statusCode: number;
+  status: number;
+  message: string;
 }
 
 export interface IRegisterRequest {
@@ -16,6 +22,7 @@ export interface IRegisterRequest {
 }
 
 export interface IRegisterResponse {
+  statusCode: number;
   status: number;
   message: string;
   data: User;
@@ -33,7 +40,6 @@ export interface User {
   username: string;
   fullname: string;
   email: string;
-  password: string;
   avatar: string;
   isVerified: boolean;
   address: string;

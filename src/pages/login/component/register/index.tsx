@@ -1,11 +1,16 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import TextInput from '../../../../components/text-input';
 import LoadingSpinner from '../../../../components/loading-spinner';
 import authAPIs from '../../../../api/auth';
 import {toast} from 'react-toastify';
+import {EToastNotifyType, toastNotify} from '../../../../utils/toastNotify';
 
-const RegisterComp = () => {
+interface IRegisterCompProps {
+  setActivedTabKey: (key: string) => void;
+}
+
+const RegisterComp: React.FC<IRegisterCompProps> = ({setActivedTabKey}) => {
   const {t} = useTranslation();
   const [isLoading, setIsLoading] = useState({register: false, verify: false});
   const [userRegister, setUserRegister] = useState({username: '', email: '', password: '', repassword: ''});
@@ -37,33 +42,12 @@ const RegisterComp = () => {
         password: userRegister.password,
       };
       const res = await authAPIs.register(body);
-
-      console.log('res', res);
-
-      if (res.status === 200 || res.status === 201) {
+      if (res.statusCode === 200 || res.statusCode === 201) {
         setShowModal(true);
-      } else if (res.status === 205) {
-        toast.error(t('sys_notify_register_exist'), {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+      } else if (res.statusCode === 401) {
+        toastNotify(t('sys_notify_register_exist'), EToastNotifyType.ERROR);
       } else {
-        toast.error(t('sys_notify_register_username_gmail_exist'), {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        toastNotify(t('sys_notify_register_username_gmail_exist'), EToastNotifyType.ERROR);
       }
     } catch (error) {
     } finally {
@@ -130,55 +114,18 @@ const RegisterComp = () => {
       };
       const res = await authAPIs.verifyEmail(body);
 
-      if (res.status === 200) {
+      if (res.statusCode === 201) {
         setShowModal(false);
+        setActivedTabKey && setActivedTabKey('1');
         setUserRegister({username: '', email: '', password: '', repassword: ''});
-
-        toast.success(t('sys_notify_verify_success'), {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light', // Giao diện (light hoặc dark)
-        });
-      } else if (res.status === 403) {
-        toast.error(t('sys_notify_verify_code_invalid'), {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        toastNotify(t('sys_notify_verify_success'), EToastNotifyType.SUCCESS);
+      } else if (res.statusCode === 402) {
+        toastNotify(t('sys_notify_verify_code_invalid'), EToastNotifyType.ERROR);
       } else {
-        toast.error(t('sys_notify_verify_error'), {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        toastNotify(t('sys_notify_verify_error'), EToastNotifyType.ERROR);
       }
     } catch (error) {
-      console.error('error', error);
-      toast.error(t('sys_notify_verify_error'), {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      toastNotify(t('sys_notify_verify_error'), EToastNotifyType.ERROR);
     } finally {
       setIsLoading((prev) => ({...prev, verify: false}));
     }
@@ -275,12 +222,13 @@ const RegisterComp = () => {
               className="outline-none text-center font-semibold  text-lg border-b-2 border-blue-500 h-10"
             />
             <button
+              disabled={verifyCode === ''}
               onClick={() => {
                 handleSubmitVerify();
               }}
-              className="bg-blue-500 text-white rounded-xl py-2 mt-4 w-full"
+              className={`${verifyCode === '' ? 'bg-blue-300' : 'bg-blue-500'} text-white rounded-xl py-2 mt-4 w-full`}
             >
-              {isLoading.verify ? <LoadingSpinner color="white" /> : t('submit')}
+              {isLoading.verify ? <LoadingSpinner color="white" /> : t('sys_submit_verify')}
             </button>
           </div>
         </div>

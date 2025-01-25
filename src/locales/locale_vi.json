@@ -1,5 +1,6 @@
 {
   "sys_login": "Đăng nhập",
+  "sys_version": "Phiên bản",
   "sys_login_username": "Tên đăng nhập",
   "sys_login_password": "Mật khẩu",
   "sys_login_repassword": "Nhập lại mật khẩu",
@@ -24,5 +25,6 @@
   "sys_notify_register_username_gmail_exist": "Tên đăng nhập hoặc mail đã được sử dụng!",
   "sys_notify_verify_success": "Xác thực tài khoản thành công!",
   "sys_notify_verify_code_invalid": "Mã xác thực không đúng!",
-  "sys_notify_verify_error": "Có lỗi xảy ra!"
+  "sys_notify_verify_error": "Có lỗi xảy ra!",
+  "sys_submit_verify": "Xác nhận"
 }

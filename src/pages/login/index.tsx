@@ -9,10 +9,11 @@ import {useTranslation} from 'react-i18next';
 import LoginComp from './component/login';
 import {useSelector} from 'react-redux';
 import RegisterComp from './component/register';
-
+import {useState} from 'react';
 const VERSION = import.meta.env.VITE_APP_VER;
 
 const LoginPage = () => {
+  const [activeTabKey, setActiveTabKey] = useState('1');
   const {t} = useTranslation();
   const appConfig = JSON.parse(localStorage.getItem('appConfig') ?? '{}');
   const lang = JSON.parse(localStorage.getItem('appConfig') ?? '{}').defaultLanguage ?? 'vi';
@@ -27,6 +28,10 @@ const LoginPage = () => {
     }, 500);
   };
 
+  const handleTabChange = (key: string) => {
+    setActiveTabKey(key);
+  };
+
   const items = [
     {
       label: <p className="text-base">{t('sys_login')}</p>, // Đăng nhập
@@ -36,7 +41,7 @@ const LoginPage = () => {
     {
       label: <p className="text-base">{t('sys_register')}</p>, //Đăng ký
       key: '2',
-      children: <RegisterComp />,
+      children: <RegisterComp setActivedTabKey={(value: string) => setActiveTabKey(value)} />,
     },
     {
       label: <p className="text-base">{t('sys_guest')}</p>, // Khách
@@ -84,6 +89,7 @@ const LoginPage = () => {
       </Dropdown>
     );
   };
+
   return (
     <div
       className="relative w-full h-screen flex justify-center overflow-hidden items-center bg-no-repeat bg-cover bg-center"
@@ -92,10 +98,12 @@ const LoginPage = () => {
       }}
     >
       <div className="bg-white rounded-xl px-8 pb-3">
-        <Tabs tabBarExtraContent={renderButton()} items={items} />
+        <Tabs activeKey={activeTabKey} onChange={handleTabChange} tabBarExtraContent={renderButton()} items={items} />
       </div>
 
-      <div className="absolute bottom-3 text-white">Version {VERSION}</div>
+      <div className="absolute bottom-3 text-white">
+        {t('sys_version')} {VERSION}
+      </div>
     </div>
   );
 };
