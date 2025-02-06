@@ -17,9 +17,6 @@ const LoginPage = () => {
   const {t} = useTranslation();
   const appConfig = JSON.parse(localStorage.getItem('appConfig') ?? '{}');
   const lang = JSON.parse(localStorage.getItem('appConfig') ?? '{}').defaultLanguage ?? 'vi';
-  const user = useSelector((state: any) => state.user.user);
-
-  console.log('user', user);
 
   const changeLanguage = (lng: string) => {
     localStorage.setItem('appConfig', JSON.stringify({...appConfig, defaultLanguage: lng}));

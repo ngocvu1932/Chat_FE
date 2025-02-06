@@ -29,7 +29,7 @@ const HeaderComp = () => {
   };
 
   return (
-    <div className="flex w-full h-full items-center justify-between px-3">
+    <div className="flex w-full h-full items-center bg-blue-200 justify-between px-3 rounded-md">
       <div>Home</div>
       <div className="flex items-center">
         <h1 className="px-3">{user.fullname}</h1>
