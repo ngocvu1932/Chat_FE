@@ -1,6 +1,7 @@
 import {useMemo, useState} from 'react';
-import {IChat, IUserChat} from '../../../../api/chat/interface';
+import {IChat} from '../../../../api/chat/interface';
 import Chat, {EChatType, IChatSelected} from '../../../../components/chat';
+import LoadingSpinner from '../../../../components/loading-spinner';
 
 interface ISidebarProps {
   user: any;
@@ -21,7 +22,7 @@ const Sidebar: React.FC<ISidebarProps> = ({user, chatData, chatSelected, isLoadi
   }, [chatData]);
 
   if (isLoading) {
-    return <div>Đang tải tin nhắn...</div>;
+    return <LoadingSpinner size={50} />;
   }
 
   if (chatData.length === 0) {
@@ -29,7 +30,7 @@ const Sidebar: React.FC<ISidebarProps> = ({user, chatData, chatSelected, isLoadi
   }
 
   return (
-    <div className="flex flex-col bg-red-300 px-2 w-full rounded-md">
+    <div className="flex flex-col w-full rounded-md">
       <Chat
         user={user}
         isChoose={chatbot?._id === selectedChat ? true : false}

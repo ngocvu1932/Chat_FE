@@ -3,7 +3,6 @@ import {useTranslation} from 'react-i18next';
 import TextInput from '../../../../components/text-input';
 import LoadingSpinner from '../../../../components/loading-spinner';
 import authAPIs from '../../../../api/auth';
-import {toast} from 'react-toastify';
 import {EToastNotifyType, toastNotify} from '../../../../utils/toastNotify';
 
 interface IRegisterCompProps {

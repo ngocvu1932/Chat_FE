@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {IChat} from '../../api/chat/interface';
 import {formatTime} from '../../utils/date';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -52,24 +52,22 @@ const Chat: React.FC<IChatProps> = ({user, type = EChatType.CHAT, chat, onSelect
 
   return (
     <div
-      className={`flex justify-between shadow-sm rounded-xl  mt-2 py-2 px-2 cursor-pointer group ${
-        isChoose ? 'bg-red-400' : ''
+      className={`flex justify-between shadow-sm rounded-xl mt-2 py-2 px-2 cursor-pointer group ${
+        isChoose ? 'bg-[#90CAF9]' : ''
       } `}
       onClick={() => {
         onSelected &&
+          !isChoose &&
           onSelected({chatId: chat._id, chatName: chatName ?? '', chatUri: avatar ?? '', online: online, type: type});
       }}
     >
       <div className="flex">
-        <Avatar src={avatar ?? ''} size={'50'} online={online} />
+        <Avatar src={avatar ?? ''} size={'55'} online={online} />
       </div>
 
-      <div className="flex flex-1 flex-col ml-2">
-        {/* <div>{type == EChatType.BOT ? 'Siêu đẹp trai' : chat.chatName}</div>/ */}
-        <div>{chatName}</div>
-        <div>
-          {chat.lastMessage.content ? chat.lastMessage.content : 'Chưa có'} <span> </span>
-        </div>
+      <div className="flex flex-1 justify-between flex-col ml-2">
+        <div className="line-clamp-1 text-[#333333]">{chatName}</div>
+        <div className="text-xs">{chat.lastMessage.content ? chat.lastMessage.content : 'Chưa có'}</div>
       </div>
 
       <div className="flex flex-col justify-between items-end ">

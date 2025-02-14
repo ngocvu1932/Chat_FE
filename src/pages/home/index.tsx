@@ -32,12 +32,12 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex w-screen h-screen flex-col bg-slate-200">
-      <div className="flex h-[8vh] pt-1 px-1">
+    <div className="flex w-screen h-screen flex-col p-1 bg-white">
+      <div className="flex h-[8vh] rounded-t-md border border-[#E0E0E0]">
         <HeaderComp />
       </div>
-      <div className="flex p-1 h-[92vh] ">
-        <div className="flex w-[20%]">
+      <div className="flex h-[92vh] rounded-b-md border-x border-b border-[#E0E0E0]">
+        <div className="flex w-[20%] border-r border-[#E0E0E0] bg-[#F7F7F7] rounded-es-md">
           <Sidebar
             user={user}
             isLoading={loading.chat}

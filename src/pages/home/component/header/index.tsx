@@ -29,7 +29,7 @@ const HeaderComp = () => {
   };
 
   return (
-    <div className="flex w-full h-full items-center bg-blue-200 justify-between px-3 rounded-md">
+    <div className="flex w-full h-full items-center justify-between px-3">
       <div>Home</div>
       <div className="flex items-center">
         <h1 className="px-3">{user.fullname}</h1>
@@ -66,7 +66,7 @@ const HeaderComp = () => {
             ],
           }}
         >
-          <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-full" />
+          <img src={user.avatar} alt="avatar" className="w-9 h-9 rounded-full" />
         </Dropdown>
       </div>
     </div>

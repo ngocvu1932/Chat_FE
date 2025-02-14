@@ -7,7 +7,6 @@ import en_flag from '../../assets/imgs/img_flag_usa.png';
 import i18next from 'i18next';
 import {useTranslation} from 'react-i18next';
 import LoginComp from './component/login';
-import {useSelector} from 'react-redux';
 import RegisterComp from './component/register';
 import {useState} from 'react';
 const VERSION = import.meta.env.VITE_APP_VER;

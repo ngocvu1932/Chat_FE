@@ -15,6 +15,7 @@ import {
 import TextInput from '../../../../components/text-input';
 import Message from '../../../../components/message';
 import {useSelector} from 'react-redux';
+import socket from '../../../../socket/socket';
 
 interface IContentProps {
   selectedChat: IChatSelected | undefined;
@@ -29,6 +30,7 @@ export interface IMessage {
   content: string;
   isSeen: string[];
   mediaUrl: string;
+  createdAt: string;
 }
 
 const Content: React.FC<IContentProps> = ({selectedChat, isShowDetailChat, setShowDetailChat}) => {
@@ -41,14 +43,36 @@ const Content: React.FC<IContentProps> = ({selectedChat, isShowDetailChat, setSh
     if (selectedChat?.type === EChatType.BOT) {
       setShowDetailChat && setShowDetailChat(false);
     }
+
+    setMessage([]);
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.emit('joinGroup', selectedChat?.chatId);
+
+    return () => {
+      socket.off('joinGroup');
+    };
+  }, [selectedChat]);
+
+  useEffect(() => {
+    // Nhận tin nhắn từ server
+    socket.on('receiveMessage', (msg: any) => {
+      console.log('msg', msg);
+      setMessage((prevMessages) => [...prevMessages, msg.message]);
+    });
+
+    return () => {
+      socket.off('receiveMessage'); // Cleanup tránh lỗi memory leak
+    };
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({behavior: 'smooth'});
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (messageInput.trim() === '') {
+  const handleSendMessage = (type: string) => {
+    if (messageInput.trim() === '' && type === 'text') {
       return;
     }
 
@@ -56,29 +80,30 @@ const Content: React.FC<IContentProps> = ({selectedChat, isShowDetailChat, setSh
       chatId: selectedChat?.chatId ?? '',
       senderId: user._id ?? '',
       type: 'text',
-      content: messageInput,
+      content: type === 'emoji' ? '👍' : messageInput,
       isSeen: [],
       mediaUrl: '',
+      createdAt: new Date().toISOString(),
     };
-
+    socket.emit('sendMessage', {groupId: selectedChat?.chatId, message: newMessage}); // Gửi tin nhắn lên server
     setMessage((prevMessages) => [...prevMessages, newMessage]);
     setMessageInput('');
   };
 
   if (!selectedChat) {
-    return <div>No chat selected</div>;
+    return <div className="flex w-full h-full items-center justify-center">Chưa có tin nhắn nào được chọn</div>;
   }
 
   return (
-    <div className="flex w-full pl-1">
+    <div className="flex w-full">
       <div
         className={`flex flex-col flex-1 bg-white w-full min-h-0 ${isShowDetailChat ? 'rounded-l-md' : 'rounded-md'} `}
       >
-        <div className="flex justify-between border-b border-gray-400 w-full py-2 px-3">
+        <div className="flex justify-between border-b border-[#E0E0E0] w-full py-2 px-3">
           <div className="flex items-center">
             <Avatar src={selectedChat.chatUri} online size="50" />
             <div className="flex flex-col pl-2">
-              <div className="text-black font-semibold text-lg">
+              <div className="text-[#1E88E5] font-semibold text-lg">
                 {selectedChat.chatName == 'Chat_with_bot_admin_chat_with_vunn'
                   ? 'Siêu đẹp trai'
                   : selectedChat.chatName}
@@ -92,15 +117,15 @@ const Content: React.FC<IContentProps> = ({selectedChat, isShowDetailChat, setSh
               ''
             ) : (
               <div className="flex gap-6">
-                <div className="cursor-pointer">
+                <div className="cursor-pointer text-[#1E88E5]">
                   <FontAwesomeIcon icon={faPhone} size="lg" />
                 </div>
-                <div className="cursor-pointer">
+                <div className="cursor-pointer text-[#1E88E5]">
                   <FontAwesomeIcon icon={faVideo} size="lg" />
                 </div>
 
                 <div
-                  className="cursor-pointer"
+                  className="cursor-pointer text-[#1E88E5]"
                   onClick={() => {
                     setShowDetailChat && setShowDetailChat(!isShowDetailChat);
                   }}
@@ -114,7 +139,7 @@ const Content: React.FC<IContentProps> = ({selectedChat, isShowDetailChat, setSh
 
         <div className="flex flex-1 min-h-0 flex-col  overflow-y-auto">
           {messages.length <= 0 ? (
-            <div>Chưa có tin nhắn</div>
+            <div className="flex w-full h-full items-center justify-center">Chưa có tin nhắn</div>
           ) : (
             <>
               {messages.map((message, index) => (
@@ -145,7 +170,7 @@ const Content: React.FC<IContentProps> = ({selectedChat, isShowDetailChat, setSh
             <TextInput
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  handleSendMessage();
+                  handleSendMessage('text');
                 }
               }}
               value={messageInput}
@@ -157,14 +182,14 @@ const Content: React.FC<IContentProps> = ({selectedChat, isShowDetailChat, setSh
             />
           </div>
 
-          <div className="flex pl-5 pr-2 cursor-pointer">
+          <div className="flex pl-5 pr-2 text-[#1E88E5] cursor-pointer" onClick={() => handleSendMessage('emoji')}>
             <FontAwesomeIcon icon={faThumbsUp} size="lg" />
           </div>
         </div>
       </div>
 
       {isShowDetailChat && (
-        <div className="flex flex-1 border-l border-gray-400 bg-white rounded-r-md max-w-[30%]">detail ở đây</div>
+        <div className="flex flex-1 border-l border-[#E0E0E0] bg-white rounded-r-md max-w-[30%]">detail ở đây</div>
       )}
     </div>
   );
